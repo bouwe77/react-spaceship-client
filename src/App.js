@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import io from "socket.io-client";
+import React, { useState } from "react";
+import useServer from "./hooks/useServer";
 
 function App() {
   return (
@@ -13,26 +13,7 @@ function App() {
 function Client({ clientId }) {
   const [speed, setSpeed] = useState(0);
   const [destination, setDestination] = useState(0);
-  const [position, setPosition] = useState(0);
-  const [message, setMessage] = useState(null);
-
-  useEffect(() => {
-    const socket = io("http://localhost:8000");
-    socket.emit("joinRoom", clientId);
-    console.log(`${clientId} joined the room`);
-
-    socket.on("CurrentPositionUpdated", position => {
-      setPosition(position);
-    });
-
-    socket.on("message", message => {
-      setMessage(message);
-    });
-
-    return () => {
-      socket.off("CurrentPositionUpdated");
-    };
-  }, [clientId]);
+  const [position] = useServer(clientId, speed, destination);
 
   return (
     <div
@@ -44,7 +25,6 @@ function Client({ clientId }) {
       }}
     >
       <h1>{clientId}</h1>
-      <h4>{message}</h4>
       <table>
         <tr>
           <td>
