@@ -3,6 +3,7 @@ import io from "socket.io-client";
 
 const useServer = (clientId, speed, destination) => {
   const [position, setPosition] = useState(0);
+  const [messages, setMessages] = useState([]);
   const socketRef = useRef();
 
   // Connect to the socket server when the clientId changes.
@@ -15,12 +16,13 @@ const useServer = (clientId, speed, destination) => {
       setPosition(position);
     });
 
-    socketRef.current.on("message", message => {
-      console.log(message);
-    });
+    socketRef.current.on("MessageSentFromServer", message =>
+      console.log(message)
+    );
 
     return () => {
       socketRef.current.off("CurrentPositionUpdated");
+      socketRef.current.off("MessageSentFromServer");
     };
   }, [clientId]);
 
@@ -34,7 +36,7 @@ const useServer = (clientId, speed, destination) => {
     socketRef.current.emit("updatedDestination", { clientId, destination });
   }, [clientId, destination]);
 
-  return [position];
+  return [position, messages];
 };
 
 export default useServer;
