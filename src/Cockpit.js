@@ -16,7 +16,7 @@ export default ({ spaceshipId }) => {
   const possibleSpeeds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   useEffect(() => {
-    //if (destinationReached) setSpeed(0);
+    if (destinationReached) setSpeed(0);
   }, [destinationReached]);
 
   return (
