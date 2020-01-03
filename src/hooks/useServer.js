@@ -2,8 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 
 const useServer = (spaceshipId, speed, destination) => {
-  const [position, setPosition] = useState(0);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [messages, setMessages] = useState([]);
+  const [destinationReached, setDestinationReached] = useState(false);
   const socketRef = useRef();
 
   // Connect to the socket server when the spaceshipId changes.
@@ -19,10 +20,15 @@ const useServer = (spaceshipId, speed, destination) => {
 
     socketRef.current.on("CurrentPositionUpdated", position => {
       setPosition(position);
+      setDestinationReached(false);
     });
 
     socketRef.current.on("MessageSentFromServer", message =>
       setMessages(messages => [message, ...messages])
+    );
+
+    socketRef.current.on("DestinationReached", () =>
+      setDestinationReached(true)
     );
 
     return () => {
@@ -41,7 +47,7 @@ const useServer = (spaceshipId, speed, destination) => {
     socketRef.current.emit("updatedDestination", { spaceshipId, destination });
   }, [spaceshipId, destination]);
 
-  return [position, messages];
+  return [position, destinationReached, messages];
 };
 
 export default useServer;

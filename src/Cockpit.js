@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useServer from "./hooks/useServer";
 import Console from "./Console";
 
 export default ({ spaceshipId }) => {
   const [speed, setSpeed] = useState(0);
-  const [destination, setDestination] = useState(0);
-  const [position, messages] = useServer(spaceshipId, speed, destination);
+  const [destination, setDestination] = useState();
+  const [destinationX, setDestinationX] = useState(0);
+  const [destinationY, setDestinationY] = useState(0);
+  const [position, destinationReached, messages] = useServer(
+    spaceshipId,
+    speed,
+    destination
+  );
+
+  const possibleSpeeds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+  useEffect(() => {
+    //if (destinationReached) setSpeed(0);
+  }, [destinationReached]);
 
   return (
     <table>
@@ -15,9 +27,15 @@ export default ({ spaceshipId }) => {
             <h3>Speed</h3>
           </td>
           <td>
-            <button onClick={() => setSpeed(speed - 1)}>-</button>
+            {possibleSpeeds.map(possibleSpeed => (
+              <button
+                key={possibleSpeed}
+                onClick={() => setSpeed(possibleSpeed)}
+              >
+                {possibleSpeed}
+              </button>
+            ))}{" "}
             {speed}
-            <button onClick={() => setSpeed(speed + 1)}>+</button>
           </td>
         </tr>
         <tr>
@@ -25,16 +43,36 @@ export default ({ spaceshipId }) => {
             <h3>Destination</h3>
           </td>
           <td>
-            <button onClick={() => setDestination(destination - 10)}>-</button>
-            {destination}
-            <button onClick={() => setDestination(destination + 10)}>+</button>
+            <input
+              type="text"
+              value={destinationX}
+              onChange={event => setDestinationX(Number(event.target.value))}
+            />
+            <input
+              type="text"
+              value={destinationY}
+              onChange={event => setDestinationY(Number(event.target.value))}
+            />
+          </td>
+        </tr>
+        <tr>
+          <td colSpan="2">
+            <button
+              onClick={() =>
+                setDestination({ x: destinationX, y: destinationY })
+              }
+            >
+              <h1>Engage! :)</h1>
+            </button>
           </td>
         </tr>
         <tr>
           <td>
             <h3>Position</h3>
           </td>
-          <td>{position}</td>
+          <td>
+            {position.x},{position.y}
+          </td>
         </tr>
         <tr>
           <td colSpan="2">
