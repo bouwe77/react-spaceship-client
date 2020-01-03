@@ -1,40 +1,45 @@
 import { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 
-const useServer = (clientId, speed, destination) => {
+const useServer = (spaceshipId, speed, destination) => {
   const [position, setPosition] = useState(0);
   const [messages, setMessages] = useState([]);
   const socketRef = useRef();
 
-  // Connect to the socket server when the clientId changes.
+  // Connect to the socket server when the spaceshipId changes.
   useEffect(() => {
-    socketRef.current = io("http://localhost:8000");
-    socketRef.current.emit("joinRoom", clientId);
-    console.log(`${clientId} joined the room`);
+    socketRef.current = io("http://localhost:8000", { forceNew: true });
+    socketRef.current.emit("joinRoom", spaceshipId);
+    console.log(`${spaceshipId} joined the room`);
+
+    socketRef.current.on("disconnect", () => {
+      console.log("disconnected...");
+      socketRef.current.connect();
+    });
 
     socketRef.current.on("CurrentPositionUpdated", position => {
       setPosition(position);
     });
 
     socketRef.current.on("MessageSentFromServer", message =>
-      console.log(message)
+      setMessages(messages => [message, ...messages])
     );
 
     return () => {
       socketRef.current.off("CurrentPositionUpdated");
       socketRef.current.off("MessageSentFromServer");
     };
-  }, [clientId]);
+  }, [spaceshipId]);
 
   // When the speed changes, send it to the server.
   useEffect(() => {
-    socketRef.current.emit("updatedSpeed", { clientId, speed });
-  }, [clientId, speed]);
+    socketRef.current.emit("updatedSpeed", { spaceshipId, speed });
+  }, [spaceshipId, speed]);
 
   // When the destination changes, send it to the server.
   useEffect(() => {
-    socketRef.current.emit("updatedDestination", { clientId, destination });
-  }, [clientId, destination]);
+    socketRef.current.emit("updatedDestination", { spaceshipId, destination });
+  }, [spaceshipId, destination]);
 
   return [position, messages];
 };

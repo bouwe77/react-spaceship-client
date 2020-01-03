@@ -4,7 +4,7 @@ export default ({ messages }) => {
   return (
     <>
       {messages.map(message => (
-        <p>{message}</p>
+        <p key={message.id}>{message.text}</p>
       ))}
     </>
   );

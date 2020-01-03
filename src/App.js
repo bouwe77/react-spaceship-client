@@ -4,13 +4,13 @@ import Cockpit from "./Cockpit";
 function App() {
   return (
     <div style={{ display: "flex" }}>
-      <Client clientId="Spaceship 1" />
-      <Client clientId="Spaceship 2" />
+      <Spaceship spaceshipId="Spaceship 1" />
+      <Spaceship spaceshipId="Spaceship 2" />
     </div>
   );
 }
 
-function Client({ clientId }) {
+function Spaceship({ spaceshipId }) {
   return (
     <div
       style={{
@@ -20,8 +20,8 @@ function Client({ clientId }) {
         backgroundColor: "lightgrey"
       }}
     >
-      <h1>{clientId}</h1>
-      <Cockpit clientId={clientId} />
+      <h1>{spaceshipId}</h1>
+      <Cockpit spaceshipId={spaceshipId} />
     </div>
   );
 }

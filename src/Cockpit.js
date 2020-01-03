@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import useServer from "./hooks/useServer";
 import Console from "./Console";
 
-export default ({ clientId }) => {
+export default ({ spaceshipId }) => {
   const [speed, setSpeed] = useState(0);
   const [destination, setDestination] = useState(0);
-  const [position, messages] = useServer(clientId, speed, destination);
+  const [position, messages] = useServer(spaceshipId, speed, destination);
 
   return (
     <table>
@@ -37,7 +37,7 @@ export default ({ clientId }) => {
           <td>{position}</td>
         </tr>
         <tr>
-          <td colspan="2">
+          <td colSpan="2">
             <h3>Console</h3>
           </td>
         </tr>
