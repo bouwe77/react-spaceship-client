@@ -1,0 +1,11 @@
+.cockpit {
+  background-image: url("./images/cockpit.png");
+  height: 300px;
+  width: 300px;
+}
+
+.engine {
+  background-image: url("./images/engine.png");
+  height: 300px;
+  width: 300px;
+}
