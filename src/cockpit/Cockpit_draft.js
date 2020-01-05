@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import useServer from "./hooks/useServer";
-import Console from "./Console";
+import useServer from "../hooks/useServer";
+import Console from "../Console";
 
 export default ({ spaceshipId }) => {
   const [speed, setSpeed] = useState(0);
