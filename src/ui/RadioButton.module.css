@@ -1,20 +1,19 @@
 input[type="radio"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
-  
-  input[type="radio"] + label {
-    display: inline-block;
-    width: 67px;
-    text-align: center;
-    padding: 2px;
-  }
-  
-  input[type="radio"]:checked + label {
-    background-color: Darkblue;
-    width: 67px;
-    text-align: center;
-    padding: 2px;
-  }
-  
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+input[type="radio"] + label {
+  display: inline-block;
+  width: 67px;
+  text-align: center;
+  padding: 2px;
+}
+
+input[type="radio"]:checked + label {
+  background-color: Darkblue;
+  width: 67px;
+  text-align: center;
+  padding: 2px;
+}
