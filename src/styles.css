@@ -42,3 +42,24 @@
   padding: 0;
   margin: 0;
 }
+
+.navigationPanel {
+  position: absolute;
+  width: 250px;
+  height: 48px;
+  left: 245px;
+  top: 309px;
+  color: White;
+  padding: 0;
+  margin: 0;
+}
+
+.navigationPanel input {
+  width: 30px;
+  margin-left: 10px;
+}
+
+.navigationPanel label {
+  width: 200px;
+  display: inline-block;
+}

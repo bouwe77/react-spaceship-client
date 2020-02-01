@@ -1,15 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 
-const useServer = (spaceshipId, speed, destination) => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [messages, setMessages] = useState([]);
-  const [destinationReached, setDestinationReached] = useState(false);
+const useServer = spaceshipId => {
+  const [currentPosition, setCurrentPosition] = useState({ position: {} });
+  //const [messages, setMessages] = useState([]);
   const socketRef = useRef();
+
+  function updateCourse(destination, speed) {
+    socketRef.current.emit("setCourse", { spaceshipId, destination, speed });
+  }
 
   // Connect to the socket server when the spaceshipId changes.
   useEffect(() => {
-    socketRef.current = io("http://localhost:8000", { forceNew: true });
+    socketRef.current = io(`${process.env.REACT_APP_API_URL}:9876`, {
+      forceNew: true
+    });
     socketRef.current.emit("joinRoom", spaceshipId);
     console.log(`${spaceshipId} joined the room`);
 
@@ -18,18 +23,14 @@ const useServer = (spaceshipId, speed, destination) => {
       socketRef.current.connect();
     });
 
-    socketRef.current.on("CurrentPositionUpdated", position => {
-      setPosition(position);
-      setDestinationReached(false);
+    socketRef.current.on("CurrentPositionUpdated", currentPosition => {
+      console.log("currentPosition", currentPosition);
+      setCurrentPosition(currentPosition);
     });
 
-    socketRef.current.on("MessageSentFromServer", message =>
-      setMessages(messages => [message, ...messages])
-    );
-
-    socketRef.current.on("DestinationReached", () =>
-      setDestinationReached(true)
-    );
+    //socketRef.current.on("MessageSentFromServer", message =>
+    //  setMessages(messages => [message, ...messages])
+    //);
 
     return () => {
       socketRef.current.off("CurrentPositionUpdated");
@@ -37,17 +38,7 @@ const useServer = (spaceshipId, speed, destination) => {
     };
   }, [spaceshipId]);
 
-  // When the speed changes, send it to the server.
-  useEffect(() => {
-    socketRef.current.emit("updatedSpeed", { spaceshipId, speed });
-  }, [spaceshipId, speed]);
-
-  // When the destination changes, send it to the server.
-  useEffect(() => {
-    socketRef.current.emit("updatedDestination", { spaceshipId, destination });
-  }, [spaceshipId, destination]);
-
-  return [position, destinationReached, messages];
+  return [updateCourse, currentPosition];
 };
 
 export default useServer;
