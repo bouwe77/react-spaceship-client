@@ -63,3 +63,14 @@
   width: 200px;
   display: inline-block;
 }
+
+.locationPanel {
+  position: absolute;
+  width: 250px;
+  height: 48px;
+  left: 545px;
+  top: 309px;
+  color: White;
+  padding: 0;
+  margin: 0;
+}

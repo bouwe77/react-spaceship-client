@@ -12,6 +12,15 @@ export async function getSpaceships() {
   }
 }
 
+export async function getSpaceship(spaceshipId) {
+  try {
+    const result = await axios.get(`${urlSpaceships}/${spaceshipId}`);
+    return result.data;
+  } catch (error) {
+    handle(error);
+  }
+}
+
 export async function getDefaultSpaceships() {
   const spaceships = await getSpaceships();
   const defaultSpaceships = spaceships.filter(spaceship => spaceship.isDefault);

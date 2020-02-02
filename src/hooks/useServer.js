@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import io from "socket.io-client";
+import { getSpaceship } from "../api/api";
 
 const useServer = spaceshipId => {
   const [currentPosition, setCurrentPosition] = useState({ position: {} });
@@ -9,6 +10,17 @@ const useServer = spaceshipId => {
   function updateCourse(destination, speed) {
     socketRef.current.emit("setCourse", { spaceshipId, destination, speed });
   }
+
+  const getCourse = useCallback(async () => {
+    const spaceship = await getSpaceship(spaceshipId);
+    return {
+      spaceshipId: spaceship.spaceshipId,
+      destinationX: spaceship.destinationX,
+      destinationY: spaceship.destinationY,
+      speed: spaceship.speed,
+      location: spaceship.location
+    };
+  }, [spaceshipId]);
 
   // Connect to the socket server when the spaceshipId changes.
   useEffect(() => {
@@ -38,7 +50,7 @@ const useServer = spaceshipId => {
     };
   }, [spaceshipId]);
 
-  return [updateCourse, currentPosition];
+  return [updateCourse, currentPosition, getCourse];
 };
 
 export default useServer;
