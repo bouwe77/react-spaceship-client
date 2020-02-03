@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "../styles.css";
-import RadioButton from "../ui/RadioButton";
 import useServer from "../hooks/useServer";
 import { getSpaceObjects } from "../api/api";
 
@@ -28,8 +27,8 @@ export default ({ spaceshipId, engineMode, updateEngineMode }) => {
     const spaceObject = spaceObjects.find(
       spaceObject => spaceObject.name === selectedSpaceObject
     );
-    setX(spaceObject.positionX);
-    setY(spaceObject.positionY);
+    setX(spaceObject.destinationX);
+    setY(spaceObject.destinationY);
   }
 
   useEffect(() => {
@@ -61,31 +60,37 @@ export default ({ spaceshipId, engineMode, updateEngineMode }) => {
     <div className="cockpit">
       <div className="engineModePanel">
         <div>
-          <RadioButton
+          <b>Engine mode</b>
+        </div>
+        <div>
+          <input
+            type="radio"
             value="idle"
-            currentValue={engineMode}
-            onChecked={updateEngineMode}
-          >
-            Idle
-          </RadioButton>
+            checked={engineMode === "idle"}
+            onChange={() => updateEngineMode("idle")}
+            id="idle"
+          />
+          <label htmlFor="idle">Idle</label>
         </div>
         <div>
-          <RadioButton
+          <input
+            type="radio"
             value="thrusters"
-            currentValue={engineMode}
-            onChecked={updateEngineMode}
-          >
-            Thrusters
-          </RadioButton>
+            checked={engineMode === "thrusters"}
+            onChange={() => updateEngineMode("thrusters")}
+            id="thrusters"
+          />
+          <label htmlFor="thrusters">Thrusters</label>
         </div>
         <div>
-          <RadioButton
+          <input
+            type="radio"
             value="impulse"
-            currentValue={engineMode}
-            onChecked={updateEngineMode}
-          >
-            Impulse
-          </RadioButton>
+            checked={engineMode === "impulse"}
+            onChange={() => updateEngineMode("impulse")}
+            id="impulse"
+          />
+          <label htmlFor="impulse">Impulse</label>
         </div>
       </div>
       <div className="navigationPanel">

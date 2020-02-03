@@ -31,7 +31,11 @@ export async function getDefaultSpaceships() {
 export async function getSpaceObjects() {
   try {
     const result = await axios.get(urlSpaceObjects);
-    const sorted = [...result.data].sort((a, b) => b.name - a.name);
+
+    const sorted = [...result.data].sort((a, b) =>
+      a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+    );
+
     return sorted;
   } catch (error) {
     handle(error);
