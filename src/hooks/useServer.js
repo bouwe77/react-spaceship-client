@@ -3,11 +3,11 @@ import io from "socket.io-client";
 import { getSpaceship } from "../api/api";
 
 const useServer = spaceshipId => {
-  const [currentPosition, setCurrentPosition] = useState({ position: {} });
+  const [currentPosition, setCurrentPosition] = useState({});
   //const [messages, setMessages] = useState([]);
   const socketRef = useRef();
 
-  function updateCourse(destination, speed) {
+  function setCourse(destination, speed) {
     socketRef.current.emit("setCourse", { spaceshipId, destination, speed });
   }
 
@@ -24,9 +24,15 @@ const useServer = spaceshipId => {
 
   // Connect to the socket server when the spaceshipId changes.
   useEffect(() => {
-    socketRef.current = io(`${process.env.REACT_APP_API_URL}:9876`, {
-      forceNew: true
-    });
+    try {
+      socketRef.current = io("https://floating-gorge-26604.herokuapp.com", {
+        forceNew: true
+      });
+    } catch (error) {
+      console.log("error", error);
+      throw error;
+    }
+
     socketRef.current.emit("joinRoom", spaceshipId);
     console.log(`${spaceshipId} joined the room`);
 
@@ -36,8 +42,14 @@ const useServer = spaceshipId => {
     });
 
     socketRef.current.on("CurrentPositionUpdated", currentPosition => {
-      console.log("currentPosition", currentPosition);
-      setCurrentPosition(currentPosition);
+      const pos = {
+        x: currentPosition.position.x,
+        y: currentPosition.position.y,
+        location: currentPosition.location,
+        destinationReached: currentPosition.destinationReached
+      };
+      console.log("currentPosition", pos);
+      setCurrentPosition(pos);
     });
 
     //socketRef.current.on("MessageSentFromServer", message =>
@@ -50,7 +62,7 @@ const useServer = spaceshipId => {
     };
   }, [spaceshipId]);
 
-  return [updateCourse, currentPosition, getCourse];
+  return [setCourse, currentPosition, getCourse];
 };
 
 export default useServer;

@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const urlSpaceships = `${process.env.REACT_APP_API_URL}:4567/spaceships`;
-const urlSpaceObjects = `${process.env.REACT_APP_API_URL}:4567/spaceobjects`;
+const urlSpaceships = "https://spaceship-api.azurewebsites.net/spaceships";
+const urlSpaceObjects = "https://spaceship-api.azurewebsites.net/spaceobjects";
 
 export async function getSpaceships() {
   try {

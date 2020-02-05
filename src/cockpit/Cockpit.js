@@ -4,7 +4,7 @@ import useServer from "../hooks/useServer";
 import { getSpaceObjects } from "../api/api";
 
 export default ({ spaceshipId, engineMode, updateEngineMode }) => {
-  const [updateCourse, currentPosition, getCourse] = useServer(spaceshipId);
+  const [setCourse, currentPosition, getCourse] = useServer(spaceshipId);
   const [x, setX] = useState("");
   const [y, setY] = useState("");
   const [speed, setSpeed] = useState("");
@@ -15,7 +15,7 @@ export default ({ spaceshipId, engineMode, updateEngineMode }) => {
   function engage(event) {
     event.preventDefault();
     if (!x || isNaN(x) || !y || isNaN(y) || !speed || isNaN(speed)) return;
-    updateCourse({ x, y }, speed);
+    setCourse({ x, y }, speed);
   }
 
   function handleSpaceObjectChange(event) {
@@ -144,8 +144,7 @@ export default ({ spaceshipId, engineMode, updateEngineMode }) => {
       </div>
       <div className="locationPanel">
         <div>
-          CurrentPosition: ({currentPosition.position.x},
-          {currentPosition.position.y})
+          CurrentPosition: ({currentPosition.x},{currentPosition.y})
         </div>
         <div>Location: {currentPosition.location || "-"}</div>
         <div>
