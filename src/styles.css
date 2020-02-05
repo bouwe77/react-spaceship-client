@@ -1,5 +1,5 @@
 .engine {
-  background-image: url("./engine/engine.png");
+  background-image: url("https://spaceship-workshop.netlify.com/engine.png");
   width: 1038px;
   height: 694px;
   position: relative;
@@ -25,7 +25,7 @@
 }
 
 .cockpit {
-  background-image: url("./cockpit/cockpit.png");
+  background-image: url("https://spaceship-workshop.netlify.com/cockpit.png");
   width: 1038px;
   height: 694px;
   position: relative;
