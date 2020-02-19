@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const urlSpaceships = "https://spaceship-api.azurewebsites.net/spaceships";
-const urlSpaceObjects = "https://spaceship-api.azurewebsites.net/spaceobjects";
+const urlSpaceships = "https://spaceship-rest-api.herokuapp.com/spaceships";
+const urlSpaceObjects = "https://spaceship-rest-api.herokuapp.com/spaceobjects";
 
 export async function getSpaceships() {
   try {
